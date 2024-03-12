@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/muhammadAhsanDS/mlop_class_task_1_reg_1_and_reg_2.git'
+                git branch: 'master', url: 'https://github.com/muhammadAhsanDS/mlop_class_task_1_reg_1_and_reg_2.git'
             }
         }
 

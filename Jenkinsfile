@@ -2,21 +2,30 @@ pipeline {
     agent any
 
     stages {
-        stage('Testing') {
+        stage('Checkout') {
             steps {
-                script {
-                    def testVariable = "test"
+                git branch: 'main', url: 'https://github.com/muhammadAhsanDS/mlop_class_task_1_reg_1_and_reg_2.git'
+            }
+        }
 
-                    // If-else condition to check the value of the variable
-                    if (testVariable == "test") {
-                        // Checkout from GitHub repository
-                        checkout([$class: 'GitSCM', 
-                                  branches: [[name: '*/master']],
-                                  userRemoteConfigs: [[url: 'https://github.com/muhammadAhsanDS/mlop_class_task_1_reg_1_and_reg_2.git']]])
-                    } else {
-                        echo "Not checking out from GitHub repository"
-                    }
-                }
+        stage('Set up Python') {
+            steps {
+                bat 'curl -o python-installer.exe https://www.python.org/ftp/python/3.9.5/python-3.9.5-amd64.exe'
+                bat 'python-installer.exe /quiet InstallAllUsers=1 PrependPath=1'
+                bat 'del python-installer.exe'
+            }
+        }
+       
+        stage('Install dependencies') {
+            steps {
+                bat 'pip install -r requirements.txt'
+                bat 'pip install pytest'
+            }
+        }
+       
+        stage('Run tests') {
+            steps {
+                bat 'test.py'
             }
         }
     }
